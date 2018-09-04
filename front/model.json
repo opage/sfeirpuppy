@@ -1,0 +1,15 @@
+{
+	id: String,
+	firstName: String,
+	lastName: String,
+	phone: String,
+	adress: String,
+	city: String,
+	cp: String,
+	email: String,
+	birthDate: Date,
+	lastModified: Date,
+	facebook: String,
+	github: String,
+	twitter: String
+}
