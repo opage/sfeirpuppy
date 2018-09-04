@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using sfeirapi.Models;
 
-namespace sfeirapi.Repositories
+namespace sfeirapi.Infrastructure.Repositories
 {
     public interface IUserRepository
     {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using sfeirapi.Models;
-using sfeirapi.Repositories;
+using sfeirapi.Infrastructure.Repositories;
+
 
 namespace sfeirapi.Controllers
 {
