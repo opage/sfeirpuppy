@@ -18,7 +18,6 @@ namespace sfeirapi.Infrastructure
                 .ApplicationServices.GetRequiredService<IOptions<SfeirApiSettings>>();
 
             ctx = new UsersContext(config);
-
             if (!ctx.User.Database.GetCollection<User>(nameof(User)).AsQueryable().Any())
             {
 

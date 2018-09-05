@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using System.IO;
 
 namespace sfeirapi
 {
@@ -7,11 +10,23 @@ namespace sfeirapi
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            BuildWebHost(args).Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+        public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseStartup<Startup>()
+                .ConfigureAppConfiguration((builderContext, config) =>
+                {
+                    config.AddEnvironmentVariables();
+                })
+                .ConfigureLogging((hostingContext, builder) =>
+                {
+                    builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                    builder.AddConsole();
+                    builder.AddDebug();
+                })
+                .Build();
     }
 }

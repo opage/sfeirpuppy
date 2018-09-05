@@ -6,7 +6,6 @@ using sfeirapi.Infrastructure.Repositories;
 namespace sfeirapi.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
     public class UserController : ControllerBase
     {
         private readonly IUserRepository _userRepository;

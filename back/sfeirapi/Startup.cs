@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using sfeirapi.Infrastructure;
+using sfeirapi.Infrastructure.Extensions;
 
 namespace sfeirapi
 {
@@ -19,8 +20,11 @@ namespace sfeirapi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services
+                .AddMvc()
+                .AddControllersAsServices();
+
             services.Configure<SfeirApiSettings>(Configuration);
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSwaggerGen(options =>
             {
                 options.DescribeAllEnumsAsStrings();
@@ -32,6 +36,17 @@ namespace sfeirapi
                     TermsOfService = "Terms Of Service"
                 });
             });
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
+            });
+            services.AddOptions();
+            services.AddInfrastructureRegistry(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -41,18 +56,18 @@ namespace sfeirapi
             else
                 app.UseHsts();
             app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseCors("CorsPolicy");
+            app.UseMvcWithDefaultRoute();
+            app.UseSwagger()
+            .UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sfeir puppy API V1");
+                c.OAuthClientId("usersswaggerui");
+                c.OAuthAppName("Users Swagger UI");
+            });
 
-            app.UseSwagger();
-            //.UseSwaggerUI(c =>
-            //{
-            //    c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Sfeir puppy API V1");
-            //    c.OAuthClientId("locationsswaggerui");
-            //    c.OAuthAppName("Locations Swagger UI");
-            //});
-
-            UsersContextSeed.SeedAsync(app, loggerFactory)
-                .Wait();
+            // Seed Data
+            UsersContextSeed.SeedAsync(app, loggerFactory).Wait();
         }
     }
 }

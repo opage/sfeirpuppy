@@ -6,20 +6,19 @@ namespace sfeirapi.Infrastructure
 {
     public class UsersContext
     {
-        private readonly IMongoDatabase _database = null;
+        private readonly IMongoDatabase _database;
 
         public UsersContext(IOptions<SfeirApiSettings> settings)
         {
             var client = new MongoClient(settings.Value.ConnectionString);
-            if (client != null)
-                _database = client.GetDatabase(settings.Value.Database);
+            _database = client?.GetDatabase(settings.Value.Database);
         }
 
         public IMongoCollection<User> User
         {
             get
             {
-                return _database.GetCollection<User>("Users");
+                return _database?.GetCollection<User>("Users");
             }
         }
     }
