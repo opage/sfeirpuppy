@@ -15,6 +15,7 @@ namespace sfeirapi
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseHealthChecks("/hc")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
                 .ConfigureAppConfiguration((builderContext, config) =>
@@ -27,6 +28,7 @@ namespace sfeirapi
                     builder.AddConsole();
                     builder.AddDebug();
                 })
+                .UseApplicationInsights()
                 .Build();
     }
 }

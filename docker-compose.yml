@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+
+    sfeirapi:
+        image: sfeirapi:${TAG:-latest}
+        build:
+          context: ./back/sfeirapi/
+          dockerfile: Dockerfile
+        depends_on:
+          - nosql.data
+
+    nosql.data:
+        image: mongo

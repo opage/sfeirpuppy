@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson;
@@ -17,9 +16,9 @@ namespace sfeirapi.Infrastructure.Repositories
             _context = new UsersContext(settings);
         }
 
-        public async Task<IEnumerable<User>> GetUsersByField(string fieldName, string fieldValue)
+        public async Task<IEnumerable<User>> GetUsersByField(string fieldName, object fieldValue)
         {
-            var filter = Builders<User>.Filter.Regex(fieldName, BsonRegularExpression.Create(new Regex(fieldValue))); ;
+            var filter = Builders<User>.Filter.Regex(fieldName, BsonRegularExpression.Create(fieldValue)); ;
             var result = await _context.User.Find(filter).ToListAsync();
             return result;
         }
