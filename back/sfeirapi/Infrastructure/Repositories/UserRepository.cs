@@ -19,7 +19,7 @@ namespace sfeirapi.Infrastructure.Repositories
 
         public async Task<IEnumerable<User>> GetUsersByField(string fieldName, object fieldValue)
         {
-            var filter = Builders<User>.Filter.Regex(fieldName, BsonRegularExpression.Create(new Regex(fieldValue?.ToString()))); ;
+            var filter = Builders<User>.Filter.Regex(fieldName, BsonRegularExpression.Create(new Regex(fieldValue?.ToString())));
             var result = await _context.User.Find(filter).ToListAsync();
             return result;
         }
