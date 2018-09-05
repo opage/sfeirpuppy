@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using sfeirapi.Models;
 using sfeirapi.Infrastructure.Repositories;
-
+using System.Threading.Tasks;
 
 namespace sfeirapi.Controllers
 {
@@ -17,20 +17,20 @@ namespace sfeirapi.Controllers
 
         [HttpGet("users")]
         [ProducesResponseType(200)]
-        public IActionResult GetUsers()
+        public async Task<IActionResult> GetUsers()
         {
-            var users = _userRepository.GetAllUsers();
+            var users = await _userRepository.GetAllUsers();
             return Ok(users);
         }
 
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
-        public IActionResult Post([FromBody] User user)
+        public async Task<IActionResult> Post([FromBody] User user)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var userId = _userRepository.AddNewUser(user);
+            var userId = await _userRepository.AddNewUser(user);
             return CreatedAtAction("AddNewUser", new { id = userId }, user);
         }
 
@@ -38,11 +38,11 @@ namespace sfeirapi.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult Put(int id, [FromBody] User user)
+        public async Task<IActionResult> Put(int id, [FromBody] User user)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            if (_userRepository.ModifyUser(id, user))
+            if (await _userRepository.ModifyUser(id, user))
                 return Ok();
             return NotFound();
         }
@@ -50,9 +50,9 @@ namespace sfeirapi.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (_userRepository.Delete(id))
+            if (await _userRepository.Delete(id))
                 return Ok();
             return NotFound();
         }

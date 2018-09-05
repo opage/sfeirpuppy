@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using sfeirapi.Models;
 
 namespace sfeirapi.Infrastructure.Repositories
 {
     public interface IUserRepository
     {
-        int AddNewUser(User user);
-        bool ModifyUser(int id, User user);
-        bool Delete(int userId);
+        Task<IEnumerable<User>> GetUsersByField(string fieldName, string fieldValue);
+        Task<long> AddNewUser(User user);
+        Task<bool> ModifyUser(int id, User user);
+        Task<bool> Delete(int userId);
 
-        IEnumerable<User> GetAllUsers();
+        Task<IEnumerable<User>> GetAllUsers();
     }
 }

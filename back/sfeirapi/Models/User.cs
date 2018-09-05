@@ -1,12 +1,13 @@
-﻿using System;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace sfeirapi.Models
 {
     public class User
     {
-        [Required(ErrorMessage = "Id is required")]
-        public int Id { get; set; }
+        [BsonId]
+        public long Id { get; set; }
 
         [Required]
         public string FirstName { get; set; }
