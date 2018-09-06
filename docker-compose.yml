@@ -12,3 +12,11 @@ services:
 
     nosql.data:
         image: mongo
+        
+    sfeirfront:
+        image: sfeirfront:${TAG:-latest}
+        build:
+          context: ./front/sfeirfront/
+          dockerfile: Dockerfile
+        depends_on:
+          - sfeirapi
