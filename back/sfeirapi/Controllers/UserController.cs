@@ -23,6 +23,14 @@ namespace sfeirapi.Controllers
             return Ok(users);
         }
 
+        [HttpGet("users/{fieldName}/{fieldValue}")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> GetUsers(string fieldName, string fieldValue)
+        {
+            var users = await _userRepository.GetUsersByField(fieldName, fieldValue);
+            return Ok(users);
+        }
+
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]

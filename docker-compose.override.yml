@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+      
+    sfeirapi:
+        environment:
+          - ASPNETCORE_ENVIRONMENT=Development
+          - ASPNETCORE_URLS=http://0.0.0.0:80
+          - ConnectionString=mongodb://nosql.data
+          - Database=sfeirpuppy
+
+        ports:
+          - "5103:80"   # Important: In a production environment your should remove the external port (5103) kept here for microservice debugging purposes. 
+                        # The API Gateway redirects and access through the internal port (80). 
+                    
+    nosql.data:
+        ports:
+          - "27017:27017"  # Important: In a production environment your should remove the external port
+          
+    sfeirfront:
+        ports:
+          - "4200:80"   # Important: In a production environment your should remove the external port (4200) kept here for microservice debugging purposes. 
+                        # The API Gateway redirects and access through the internal port (80). 

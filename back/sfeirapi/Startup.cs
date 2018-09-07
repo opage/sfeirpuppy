@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.HealthChecks;
 using Microsoft.Extensions.Logging;
 using sfeirapi.Infrastructure;
 using sfeirapi.Infrastructure.Extensions;
+using System.Threading.Tasks;
 
 namespace sfeirapi
 {
@@ -24,6 +26,15 @@ namespace sfeirapi
                 .AddControllersAsServices();
 
             services.Configure<SfeirApiSettings>(Configuration);
+
+            services.AddHealthChecks(
+                checks =>
+                {
+                    checks.AddValueTaskCheck(
+                        "HTTP Endpoint",
+                        () => new ValueTask<IHealthCheckResult>(HealthCheckResult.Healthy("Ok")));
+                });
+
             services.AddSwaggerGen(options =>
             {
                 options.DescribeAllEnumsAsStrings();
